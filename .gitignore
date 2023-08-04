@@ -1,2 +1,13 @@
-.idea/
+# Python __pycache__ files
+__pycache__/
+
+# Compiled Python files
+*.pyc
+*.pyo
+__pycache__/
+
+# User-specific files
 venv/
+*.pyc
+.vscode/
+.idea/
