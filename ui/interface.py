@@ -141,7 +141,39 @@ class UI:
             button.pack(side="left", padx=7)
 
     def browse_data(self):
-        pass
+        for widget in self.main_frame.winfo_children():
+            widget.destroy()
+
+        title_label = tk.Label(self.main_frame, text="Обзор данных за месяц:",
+                               font=("Helvetica", 10, "bold"))
+        title_label.pack(padx=10, pady=10)
+
+        #TODO код для получения данных о расходах и доходах за календарный месяц
+
+        # expenses_total = self.get_expenses_total()
+        # income_total = self.get_income_total()
+
+        expenses_label = tk.Label(self.main_frame,
+                                  text="Расходы за месяц: $",
+                                  # text=f"Расходы за месяц: ${expenses_total:.2f}",
+                                  anchor="w", font=("Helvetica", 10))
+        expenses_label.pack(anchor="w", padx=10, pady=5)
+
+        income_label = tk.Label(self.main_frame,
+                                text="Расходы за месяц: $",
+                                # text=f"Доходы за месяц: ${income_total:.2f}",
+                                anchor="w", font=("Helvetica", 10))
+        income_label.pack(anchor="w", padx=10, pady=5)
+
+        tk.Frame(self.main_frame, height=10).pack()
+
+        for text, command in self.button_data:
+            button = tk.Button(
+                self.main_frame, text=text, anchor="w", command=command,
+                relief=tk.RAISED, pady=7, bg="lightblue", fg="black",
+                font=("Helvetica", 10)
+            )
+            button.pack(side="left", padx=6)
 
     def run(self):
         self.root.mainloop()
