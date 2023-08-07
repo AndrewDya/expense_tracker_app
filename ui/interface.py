@@ -1,83 +1,56 @@
 import tkinter as tk
-from tkinter import messagebox
-from expenses.budget import Budget
-from expenses.espense import Expense
-from ui.views import ExpenseInputView, ExpenseListView, BudgetTrackingView
 
 
 class UI:
     def __init__(self):
-        self.budget = Budget(total_budget=5000)
-
         self.root = tk.Tk()
-        self.root.title("Приложение для учета расходов")
-
-        self.root.geometry("400x300")
+        self.root.title("Money stack")
+        self.root.geometry("300x500")
 
         self.main_frame = tk.Frame(self.root)
         self.main_frame.pack()
 
-        self.show_menu()
+        self.button_data = [
+            ("Счета", self.choose_account),
+            ("Категория", self.choose_category),
+            ("Операция", self.choose_operation),
+            ("Обзор", self.browse_data)
+        ]
 
-    def show_menu(self):
+        self.choose_account()
+
+    def choose_account(self):
         for widget in self.main_frame.winfo_children():
             widget.destroy()
 
-        menu_label = tk.Label(self.main_frame, text="Выберите действие:")
-        menu_label.pack()
+        balance_label = tk.Label(self.main_frame, text="Баланс: $5000",
+                                 font=("Helvetica", 10), anchor="w")
+        balance_label.pack()
 
-        add_button = tk.Button(self.main_frame, text="Добавить расход",
-                               command=self.add_expense)
-        add_button.pack()
+        account_category_label = tk.Label(self.main_frame, text="Счета:",
+                                          anchor="w")
+        account_category_label.pack(side="top", anchor="w")
 
-        view_button = tk.Button(self.main_frame, text="Просмотреть расходы",
-                                command=self.view_expenses)
-        view_button.pack()
+        savings_category_label = tk.Label(self.main_frame, text="Сбережения:",
+                                          anchor="w")
+        savings_category_label.pack(side="top", anchor="w")
 
-        budget_button = tk.Button(self.main_frame, text="Отслеживание бюджета",
-                                  command=self.budget_tracking)
-        budget_button.pack()
+        for text, command in self.button_data:
+            button = tk.Button(
+                self.main_frame, text=text, anchor="w", command=command,
+                relief=tk.RAISED, pady=7, bg="lightblue", fg="black",
+                font=("Helvetica", 10)
+            )
+            button.pack(side="left", padx=6)
 
-    def add_expense(self):
-        expense_details = ExpenseInputView.get_expense_details()
+    def choose_category(self):
+        pass
 
-        category = self.budget.get_category(expense_details[2])
-        if category is None:
-            BudgetTrackingView.category_not_found()
-            return
+    def choose_operation(self):
+        pass
 
-        expense = Expense(*expense_details, category)
-        category.add_expense(expense)
-        messagebox.showinfo("Добавление расхода", "Расход успешно добавлен.")
-
-    def view_expenses(self):
-        import tkinter.simpledialog
-        category_name = tkinter.simpledialog.askstring("Просмотр расходов",
-                                                       "Введите название категории (или оставьте пустым для просмотра всех расходов):")
-        if category_name:
-            category = self.budget.get_category(category_name)
-            expenses = category.get_expenses() if category else []
-        else:
-            expenses = [expense for cat in self.budget.categories.values() for
-                        expense in cat.get_expenses()]
-        ExpenseListView.show_expenses(expenses)
-
-    def budget_tracking(self):
-        total_budget = self.budget.get_total_budget()
-        remaining_budget = self.budget.get_remaining_budget()
-
-        for widget in self.main_frame.winfo_children():
-            widget.destroy()
-
-        total_budget_label = tk.Label(self.main_frame, text=f"Общий бюджет: {total_budget}")
-        total_budget_label.pack()
-
-        remaining_budget_label = tk.Label(self.main_frame, text=f"Остаток бюджета: {remaining_budget}")
-        remaining_budget_label.pack()
-
-        back_button = tk.Button(self.main_frame, text="Назад", command=self.show_menu)
-        if back_button:
-            back_button.pack()
+    def browse_data(self):
+        pass
 
     def run(self):
         self.root.mainloop()
