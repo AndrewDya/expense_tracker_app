@@ -12,8 +12,8 @@ class UI:
 
         self.button_data = [
             ("Счета", self.choose_account),
-            ("Категория", self.choose_category),
-            ("Операция", self.choose_operation),
+            ("Расходы", self.choose_category),
+            ("Операции", self.choose_operation),
             ("Обзор", self.browse_data)
         ]
 
@@ -27,13 +27,44 @@ class UI:
                                  font=("Helvetica", 10, "bold"), anchor="w")
         balance_label.pack()
 
+        card_category_label = tk.Label(self.main_frame,
+                                       text="Банковские карты:",
+                                       anchor="w")
+        card_category_label.pack(side="top", anchor="w")
+
+        add_card_button = tk.Button(
+            self.main_frame, text="Добавить карту", anchor="w",
+            # command=self.add_card,
+            relief=tk.RAISED, pady=4, bg="lightyellow", fg="black",
+            font=("Helvetica", 10)
+        )
+        add_card_button.pack(side="top", anchor="w", padx=6)
+
         account_category_label = tk.Label(self.main_frame, text="Счета:",
                                           anchor="w")
         account_category_label.pack(side="top", anchor="w")
 
+        add_account_button = tk.Button(
+            self.main_frame, text="Добавить счет", anchor="w",
+            # command=self.add_account,
+            relief=tk.RAISED, pady=4, bg="lightgreen", fg="black",
+            font=("Helvetica", 10)
+        )
+        add_account_button.pack(side="top", anchor="w", padx=6)
+
         savings_category_label = tk.Label(self.main_frame, text="Сбережения:",
                                           anchor="w")
         savings_category_label.pack(side="top", anchor="w")
+
+        add_savings_button = tk.Button(
+            self.main_frame, text="Добавить сбережения", anchor="w",
+            # command=self.add_savings,
+            relief=tk.RAISED, pady=4, bg="lightpink", fg="black",
+            font=("Helvetica", 10)
+        )
+        add_savings_button.pack(side="top", anchor="w", padx=6)
+
+        tk.Frame(self.main_frame, height=10).pack()
 
         for text, command in self.button_data:
             button = tk.Button(
@@ -82,7 +113,32 @@ class UI:
             button.pack(side="left", padx=7)
 
     def choose_operation(self):
-        pass
+        for widget in self.main_frame.winfo_children():
+            widget.destroy()
+
+        title_label = tk.Label(self.main_frame, text="Выберите операцию:",
+                               font=("Helvetica", 10, "bold"))
+        title_label.pack(padx=10, pady=10)
+
+        operations = ["Зарплата", "Переводы", "Снятие наличных", "Возврат", "Другое"]
+
+        for operation in operations:
+            button = tk.Button(
+                self.main_frame, text=operation, anchor="center",
+                width=25,
+                command=lambda op=operation: self.operation_selected(op),
+                relief=tk.RAISED, pady=8, bg="lightgreen", fg="black",
+                font=("Helvetica", 10, "bold")
+            )
+            button.pack(padx=10, pady=5)
+
+        for text, command in self.button_data:
+            button = tk.Button(
+                self.main_frame, text=text, anchor="w", command=command,
+                relief=tk.RAISED, pady=7, bg="lightblue", fg="black",
+                font=("Helvetica", 10)
+            )
+            button.pack(side="left", padx=7)
 
     def browse_data(self):
         pass
